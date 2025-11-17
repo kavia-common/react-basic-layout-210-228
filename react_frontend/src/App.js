@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+// Example import for Login (see src/components/Login.jsx):
+// import { Login } from "./components";
 
 // PUBLIC_INTERFACE
 function App() {
@@ -19,6 +21,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {/* 
+          To add the Login component, uncomment below and import at the top:
+          <Login />
+        */}
         <button 
           className="theme-toggle" 
           onClick={toggleTheme}
