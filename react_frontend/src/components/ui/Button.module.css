@@ -15,7 +15,7 @@
 
 /* Base button styles */
 .button {
-  border-radius: 0; /* Square corners */
+  border-radius: 8px; /* Rounded rectangle corners */
   border: none;
   outline: none;
   font-weight: 600;
