@@ -64,7 +64,13 @@ const Login = () => {
 
   return (
     <div className={styles["login-outer"]}>
-      <div className={styles["login-card"]} role="main" aria-labelledby="login-title">
+      {/* Animate on mount: fade/slide-in */}
+      <div
+        className={styles["login-card"]}
+        role="main"
+        aria-labelledby="login-title"
+        tabIndex={-1}
+      >
         <h2 className={styles["login-title"]} id="login-title">
           Sign in to your account
         </h2>
@@ -153,6 +159,7 @@ const Login = () => {
               {passwordError || "\u00A0"}
             </div>
           </div>
+          {/* Button component (Button.jsx + Button.module.css) already has micro-interaction transitions */}
           <Button
             type="submit"
             variant="primary"
@@ -166,7 +173,7 @@ const Login = () => {
           </Button>
         </form>
         <footer className={styles["login-footer"]}>
-          © {new Date().getFullYear()} Kavia • Secure &amp; simple login
+          © {new Date().getFullYear()} Kavia • Secure & simple login
         </footer>
       </div>
     </div>
