@@ -1,143 +1,169 @@
 import React, { useState } from "react";
+import styles from "./Login.module.css";
 
 /**
  * PUBLIC_INTERFACE
- * Login - A controlled React functional component for user login.
- *
- * Renders a form with labelled email and password fields.
- * All fields are accessible and styled with classNames suitable for theming.
- * On submit, the entered values are logged to the console.
- * No side-effects or external service calls.
+ * Login - modern, accessible login card.
  *
  * Usage:
- *   import Login from './components/Login';
- *   // <Login />
- *
- * Styling accents follow:
- *   - Primary (#3b82f6): .login-primary
- *   - Success (#06b6d4): .login-success
+ *   import Login from "./components/Login";
+ *   <Login />
  */
 const Login = () => {
+  // Local state for controlled inputs and error simulation
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [touched, setTouched] = useState({});
+  const [error, setError] = useState({});
+  const [submitting, setSubmitting] = useState(false);
 
-  // Handle input changes for controlled fields
+  // Simulate basic validation: show error if empty and field is touched
+  const validate = () => {
+    const errors = {};
+    if (!form.email) errors.email = "Email is required.";
+    else if (!/\S+@\S+\.\S+/.test(form.email)) errors.email = "Please enter a valid email.";
+    if (!form.password) errors.password = "Password is required.";
+    else if (form.password.length < 6)
+      errors.password = "Password must be at least 6 characters.";
+    return errors;
+  };
+
+  // Handle controlled input change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    if (error[e.target.name]) setError({ ...error, [e.target.name]: undefined });
   };
 
-  // Toggle password visibility for UX
-  const handleTogglePassword = () => {
-    setShowPassword((prev) => !prev);
+  // Field blur (for showing error only after touch)
+  const handleBlur = (e) => {
+    setTouched({ ...touched, [e.target.name]: true });
   };
 
-  // Submit handler: prevent default and log state
+  // Toggle password visibility
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
+
+  // Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Simulate submission by logging
-    console.log("Login form submitted:", form);
+    setTouched({ email: true, password: true });
+    const errors = validate();
+    setError(errors);
+    if (Object.keys(errors).length === 0) {
+      setSubmitting(true);
+      // Simulate async login
+      setTimeout(() => {
+        setSubmitting(false);
+        alert(`Logged in as: ${form.email}`);
+      }, 500);
+    }
   };
 
+  const emailError = touched.email && error.email;
+  const passwordError = touched.password && error.password;
+
   return (
-    <div className="login-container" style={{ maxWidth: 360, margin: "2rem auto", padding: "2rem", background: "#fff", borderRadius: "1rem", boxShadow: "0 2px 8px rgba(59,130,246,0.07)" }}>
-      <h2 className="login-title" style={{ color: "#3b82f6", marginBottom: "1rem", textAlign: "center", fontWeight: 700 }}>Sign in to your account</h2>
-      <form className="login-form" onSubmit={handleSubmit} autoComplete="off">
-        <div className="login-field" style={{ marginBottom: "1.2rem" }}>
-          <label htmlFor="login-email" className="login-label" style={{ display: "block", color: "#111827", fontWeight: 600, marginBottom: 6 }}>
-            Email address
-          </label>
-          <input
-            id="login-email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            autoComplete="username"
-            placeholder="you@example.com"
-            className="login-input"
-            style={{
-              padding: "0.5rem 0.75rem",
-              border: "1px solid #e5e7eb",
-              borderRadius: 8,
-              width: "100%",
-              outline: "none",
-              fontSize: 16
-            }}
-            aria-label="Email address"
-          />
-        </div>
-        <div className="login-field" style={{ marginBottom: "1.2rem" }}>
-          <label htmlFor="login-password" className="login-label" style={{ display: "block", color: "#111827", fontWeight: 600, marginBottom: 6 }}>
-            Password
-          </label>
-          <div style={{ position: "relative" }}>
-            <input
-              id="login-password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={form.password}
-              onChange={handleChange}
-              required
-              autoComplete="current-password"
-              placeholder="********"
-              className="login-input"
-              style={{
-                padding: "0.5rem 0.75rem",
-                border: "1px solid #e5e7eb",
-                borderRadius: 8,
-                width: "100%",
-                outline: "none",
-                fontSize: 16
-              }}
-              aria-label="Password"
-            />
-            <button
-              type="button"
-              onClick={handleTogglePassword}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-              style={{
-                position: "absolute",
-                right: 8,
-                top: "50%",
-                transform: "translateY(-50%)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                color: "#64748b"
-              }}
-              tabIndex={-1}
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-          </div>
-        </div>
-        <button
-          type="submit"
-          className="login-btn login-primary"
-          style={{
-            width: "100%",
-            padding: "0.75rem 0",
-            background: "#3b82f6",
-            color: "#fff",
-            border: "none",
-            borderRadius: 8,
-            fontWeight: 700,
-            fontSize: 16,
-            cursor: "pointer",
-            boxShadow: "0 2px 4px rgba(59,130,246,0.09)",
-            transition: "background 0.2s"
-          }}
+    <div className={styles["login-outer"]}>
+      <div className={styles["login-card"]} role="main" aria-labelledby="login-title">
+        <h2 className={styles["login-title"]} id="login-title">
+          Sign in to your account
+        </h2>
+        <form
+          className={styles["login-form"]}
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          noValidate
         >
-          Sign In
-        </button>
-      </form>
-      {/* Style guide: Use .login-primary for #3b82f6, .login-success for #06b6d4 */}
-      {/* For integration: 
-          import Login from "./components/Login";
-          <Login />
-      */}
+          <div className={styles["login-field"]}>
+            <label
+              htmlFor="login-email"
+              className={styles["login-label"]}
+            >
+              Email address
+            </label>
+            <div className={styles["login-input-wrap"]}>
+              <input
+                id="login-email"
+                name="email"
+                type="email"
+                className={styles["login-input"]}
+                value={form.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-label="Email address"
+                aria-invalid={!!emailError}
+                aria-describedby={emailError ? "login-email-error" : undefined}
+                autoComplete="username"
+                required
+                placeholder="you@example.com"
+                disabled={submitting}
+              />
+            </div>
+            <div
+              className={styles["login-error"]}
+              id="login-email-error"
+              role={emailError ? "alert" : undefined}
+              aria-live="polite"
+            >
+              {emailError || "\u00A0"}
+            </div>
+          </div>
+          <div className={styles["login-field"]}>
+            <label
+              htmlFor="login-password"
+              className={styles["login-label"]}
+            >
+              Password
+            </label>
+            <div className={styles["login-input-wrap"]}>
+              <input
+                id="login-password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className={styles["login-input"]}
+                value={form.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                aria-label="Password"
+                aria-invalid={!!passwordError}
+                aria-describedby={passwordError ? "login-password-error" : undefined}
+                autoComplete="current-password"
+                required
+                placeholder="••••••••"
+                disabled={submitting}
+              />
+              <button
+                type="button"
+                tabIndex={0}
+                className={styles["login-toggle-btn"]}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                title={showPassword ? "Hide password" : "Show password"}
+                onClick={handleTogglePassword}
+                disabled={submitting}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+            <div
+              className={styles["login-error"]}
+              id="login-password-error"
+              role={passwordError ? "alert" : undefined}
+              aria-live="polite"
+            >
+              {passwordError || "\u00A0"}
+            </div>
+          </div>
+          <button
+            type="submit"
+            className={styles["login-btn"]}
+            disabled={submitting}
+          >
+            {submitting ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+        <footer className={styles["login-footer"]}>
+          © {new Date().getFullYear()} Kavia • Secure &amp; simple login
+        </footer>
+      </div>
     </div>
   );
 };
