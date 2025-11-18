@@ -138,3 +138,32 @@
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
+
+/* Outline style (transparent bg + primary border) */
+.variant-outline {
+  background: transparent;
+  color: var(--button-primary);
+  border: 1.5px solid var(--button-primary);
+}
+.variant-outline:hover,
+.variant-outline:focus-visible {
+  background: var(--button-ghost-hover);
+  color: var(--button-primary-hover);
+  border-color: var(--button-primary-hover);
+  outline: 2px solid var(--button-focus);
+  outline-offset: 1px;
+}
+
+/* Icon support */
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.18em;
+  line-height: 1;
+}
+.icon-left {
+  margin-right: 0.40em;
+}
+.icon-right {
+  margin-left: 0.40em;
+}
