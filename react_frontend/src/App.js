@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Login } from "./components";
 import Navbar from "./components/ui/Navbar";
+import ModalDemo from "./examples/ModalDemo";
 
 /** Top padding for fixed navbar */
 const NAVBAR_HEIGHT = 62; // matches --navbar-height from Navbar.module.css
@@ -47,6 +48,7 @@ function App() {
       </button>
       {/* Spacer for fixed Navbar */}
       {FIXED && <div style={{height: NAVBAR_HEIGHT, minHeight: NAVBAR_HEIGHT}} aria-hidden="true"></div>}
+      <ModalDemo />
       <Login />
     </div>
   );
