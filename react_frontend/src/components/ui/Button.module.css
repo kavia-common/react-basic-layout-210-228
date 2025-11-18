@@ -1,6 +1,7 @@
 :root {
-  --button-primary: #3b82f6;
-  --button-primary-hover: #2563eb;
+  --button-primary: #ef4444;
+  --button-primary-hover: #dc2626;
+  --button-primary-active: #b91c1c;
   --button-secondary: #64748b;
   --button-secondary-hover: #334155;
   --button-success: #06b6d4;
@@ -10,7 +11,7 @@
   --button-text: #fff;
   --button-bg-disabled: #e5e7eb;
   --button-text-disabled: #a1a1aa;
-  --button-focus: #06b6d4;
+  --button-focus: rgba(239,68,68,0.35);
 }
 
 /* Base button styles */
@@ -65,6 +66,9 @@
   background: var(--button-primary-hover);
   outline: 2px solid var(--button-focus);
   outline-offset: 1px;
+}
+.variant-primary:active {
+  background: var(--button-primary-active);
 }
 .variant-secondary {
   background: var(--button-secondary);
