@@ -3,6 +3,7 @@ import './App.css';
 import { Login } from "./components";
 import Navbar from "./components/ui/Navbar";
 import ModalDemo from "./examples/ModalDemo";
+import { ToasterProvider } from "./components/ui/Toaster";
 
 /** Top padding for fixed navbar */
 const NAVBAR_HEIGHT = 62; // matches --navbar-height from Navbar.module.css
@@ -30,27 +31,38 @@ function App() {
   const FIXED = true;
 
   return (
-    <div className="App">
-      <Navbar
-        brand="KaviaApp"
-        logo={logo}
-        fixed={FIXED}
-        // links and other props can be customized by parent if needed
-      />
-      {/* Theme toggle stays fixed above everything */}
-      <button
-        className="theme-toggle"
-        onClick={toggleTheme}
-        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        style={{ zIndex: 50, position: "fixed" }}
-      >
-        {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-      </button>
-      {/* Spacer for fixed Navbar */}
-      {FIXED && <div style={{height: NAVBAR_HEIGHT, minHeight: NAVBAR_HEIGHT}} aria-hidden="true"></div>}
-      <ModalDemo />
-      <Login />
-    </div>
+    <ToasterProvider>
+      <div className="App">
+        <Navbar
+          brand="KaviaApp"
+          logo={logo}
+          fixed={FIXED}
+          // links and other props can be customized by parent if needed
+        />
+        {/* Theme toggle stays fixed above everything */}
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+          style={{ zIndex: 50, position: "fixed" }}
+        >
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
+        {/* Spacer for fixed Navbar */}
+        {FIXED && <div style={{height: NAVBAR_HEIGHT, minHeight: NAVBAR_HEIGHT}} aria-hidden="true"></div>}
+        <ModalDemo />
+        {/* Toast demo UI for manual test */}
+        <div style={{ margin: "2.4em 0" }}>
+          {/*
+           Import source may require path './examples/ToastDemo', so check actual usage if error.
+           */}
+          {require('./examples/ToastDemo.jsx').default
+            ? React.createElement(require('./examples/ToastDemo.jsx').default)
+            : null}
+        </div>
+        <Login />
+      </div>
+    </ToasterProvider>
   );
 }
 
