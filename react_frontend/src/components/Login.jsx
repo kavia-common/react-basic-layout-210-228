@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
+import { Button } from "./ui";
 
 /**
  * PUBLIC_INTERFACE
@@ -152,13 +153,17 @@ const Login = () => {
               {passwordError || "\u00A0"}
             </div>
           </div>
-          <button
+          <Button
             type="submit"
-            className={styles["login-btn"]}
+            variant="primary"
+            size="md"
+            fullWidth
+            loading={submitting}
             disabled={submitting}
+            aria-label="Sign In"
           >
-            {submitting ? "Signing in..." : "Sign In"}
-          </button>
+            Sign In
+          </Button>
         </form>
         <footer className={styles["login-footer"]}>
           © {new Date().getFullYear()} Kavia • Secure &amp; simple login
